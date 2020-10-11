@@ -21,6 +21,11 @@ resource "aws_codebuild_project" "go-app-build" {
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode = true
 
+    environment_variable {
+      name  = "MAJOR_VERSION"
+      value = "1.0.0"
+    }
+
   }
 
   logs_config {
@@ -31,7 +36,7 @@ resource "aws_codebuild_project" "go-app-build" {
 
   source {
     type            = "GITHUB"
-    location        = "https://github.com/uchann2/ci-pipeline-project-1.git"
+    location        = "https://github.com/uchann2/ci-pipeline-project-1"
     git_clone_depth = 0
     buildspec = "buildspec.yml"
 
@@ -45,5 +50,5 @@ resource "aws_codebuild_project" "go-app-build" {
     }
   }
 
-  source_version = "master"
+  source_version = "main"
 }
