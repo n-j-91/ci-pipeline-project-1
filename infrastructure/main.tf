@@ -15,4 +15,5 @@ module "ci" {
     source = "./ci"
     ecr-full-access-policy-arn = "${var.ecr-full-access-policy-arn}"
     github-personal-token = "${var.github-personal-token}"
+    ecr_registry_uri = "${module.ecs.ecr_registry_uri}"
 }

@@ -35,16 +35,17 @@ phases:
        - git submodule update --remote
        - cd TechChallengeApp && git rev-list --count HEAD > ../build-number && cd ..
        - IMG_VERSION=${MAJOR_VERSION}-$(cat build-number)
+       - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REPO_PATH}
   build:
     commands:
        - echo "Building container"
        - cd TechChallengeApp
        - ./build.sh
        - docker build -t techchallengeapp:latest .
-  #post_build:
-    #commands:
-      # - command
-      # - command
+  post_build:
+    commands:
+       - docker tag techchallengeapp:latest ${ECR_REPO_PATH}:go-app-${IMG_VERSION}
+       - docker push ${ECR_REPO_PATH}:go-app-${IMG_VERSION}
 #reports:
   #report-name-or-arn:
     #files:

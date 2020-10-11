@@ -26,6 +26,11 @@ resource "aws_codebuild_project" "go-app-build" {
       value = "1.0.0"
     }
 
+    environment_variable {
+      name  = "ECR_REPO_PATH"
+      value = "${var.ecr_registry_uri}"
+    }
+
   }
 
   logs_config {
