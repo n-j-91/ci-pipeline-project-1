@@ -4,5 +4,8 @@ provider "aws" {
 
 module "ecs" {
     source = "./ecs"
-    ecs-task-execution-role-policy-arn="${var.ecs-task-execution-role-policy-arn}"
+    ecs-task-execution-role-policy-arn = "${var.ecs-task-execution-role-policy-arn}"
+    postgres-db-version = "${var.postgres-db-version}"
+    postgres-db-name = "${var.postgres-db-name}"
+    postgres-db-password = "${var.postgres-db-password}"
 }

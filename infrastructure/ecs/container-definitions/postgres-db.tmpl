@@ -1,0 +1,30 @@
+[
+    {
+      "name": "postgress-db",
+      "image": "registry.hub.docker.com/library/postgres:${pg-db-version}",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 5432,
+          "protocol": "tcp",
+          "hostPort": 5432
+        }
+      ],
+      "environment": [
+        {
+          "name": "POSTGRES_DB",
+          "value": "${pg-db-name}"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "${pg-db-password}"
+        }
+      ],
+      "mountPoints": [
+        {
+          "containerPath": "/var/lib/postgresql/data",
+          "sourceVolume": "pg-data"
+        }
+        ]
+    }
+  ]
