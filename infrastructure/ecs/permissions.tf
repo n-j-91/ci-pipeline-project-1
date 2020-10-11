@@ -9,7 +9,7 @@ resource "aws_iam_role" "ecs-task-execution-role" {
                             },
                         "Action": "sts:AssumeRole"
             }]  
-        }
+}
 EOF
 }
 

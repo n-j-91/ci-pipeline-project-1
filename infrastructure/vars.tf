@@ -4,6 +4,12 @@ variable "ecs-task-execution-role-policy-arn" {
     default = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+variable "ecr-full-access-policy-arn" {
+    type = string
+    description = "AWS ECR full access policy arn"
+    default = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+}
+
 variable "postgres-db-version" {
     type = string
     description = "Postgres database image version"
@@ -25,4 +31,5 @@ variable "postgres-db-password" {
 variable "postgres-dbhost-name" {
     type = string
     description = "Postgres database host / ip"
+    default = "172.31.23.161"
 }

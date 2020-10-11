@@ -10,3 +10,8 @@ module "ecs" {
     postgres-db-password = "${var.postgres-db-password}"
     postgres-dbhost-name = "${var.postgres-dbhost-name}"
 }
+
+module "ci" {
+    source = "./ci"
+    ecr-full-access-policy-arn = "${var.ecr-full-access-policy-arn}"
+}
