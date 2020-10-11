@@ -9,3 +9,6 @@ variable "postgres-db-name" {
 
 variable "postgres-db-password" {
 }
+
+variable "postgres-dbhost-name" {
+}

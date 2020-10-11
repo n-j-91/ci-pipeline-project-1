@@ -21,3 +21,8 @@ variable "postgres-db-password" {
     description = "Postgres database password"
     default = "pg@dm!n123"
 }
+
+variable "postgres-dbhost-name" {
+    type = string
+    description = "Postgres database host / ip"
+}

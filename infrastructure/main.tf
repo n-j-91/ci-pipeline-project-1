@@ -8,4 +8,5 @@ module "ecs" {
     postgres-db-version = "${var.postgres-db-version}"
     postgres-db-name = "${var.postgres-db-name}"
     postgres-db-password = "${var.postgres-db-password}"
+    postgres-dbhost-name = "${var.postgres-dbhost-name}"
 }
