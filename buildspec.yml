@@ -29,13 +29,13 @@ phases:
     #commands:
       # - command
       # - command
-  #pre_build:
-    #commands:
-      # - command
+  pre_build:
+    commands:
+       - echo "This is pre_build phase"
       # - command
   build:
     commands:
-      # - command
+       - echo "This is build phase"
       # - command
   #post_build:
     #commands:

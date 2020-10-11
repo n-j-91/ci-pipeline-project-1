@@ -33,3 +33,8 @@ variable "postgres-dbhost-name" {
     description = "Postgres database host / ip"
     default = "172.31.23.161"
 }
+
+variable "github-personal-token" {
+    type = string
+    description = "Personal access token for github"
+}
