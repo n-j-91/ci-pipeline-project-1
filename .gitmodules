@@ -1,4 +1,0 @@
-[submodule "TechChallengeApp"]
-	path = TechChallengeApp
-	url = https://github.com/servian/TechChallengeApp.git
-	branch = master
