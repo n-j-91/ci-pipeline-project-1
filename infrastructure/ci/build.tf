@@ -33,7 +33,7 @@ resource "aws_codebuild_project" "go-app-build" {
     type            = "GITHUB"
     location        = "https://github.com/servian/TechChallengeApp.git"
     git_clone_depth = 0
-    buildspec = "ci/buildspec.yml"
+    buildspec = "$CODEBUILD_SRC_DIR_ci/ci/buildspec.yml"
 
     auth {
       type     = "OAUTH"
@@ -44,22 +44,6 @@ resource "aws_codebuild_project" "go-app-build" {
       fetch_submodules = false
     }
   }
-
-  secondary_sources {
-    type            = "GITHUB"
-    location        = "https://github.com/uchann2/ci-pipeline-project-1.git"
-    git_clone_depth = 0
-    source_identifier = "ci"
-
-    auth {
-      type     = "OAUTH"
-      resource = "${aws_codebuild_source_credential.github-personal-token.arn}"
-    }
-
-    git_submodules_config {
-      fetch_submodules = false
-    }
-  }
-
+  
   source_version = "master"
 }
