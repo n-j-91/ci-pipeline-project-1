@@ -33,6 +33,7 @@ resource "aws_codebuild_project" "go-app-build" {
     type            = "GITHUB"
     location        = "https://github.com/servian/TechChallengeApp.git"
     git_clone_depth = 0
+    buildspec = "ci/buildspec.yml"
 
     auth {
       type     = "OAUTH"
