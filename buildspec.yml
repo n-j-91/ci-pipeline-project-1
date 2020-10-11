@@ -32,6 +32,8 @@ phases:
   pre_build:
     commands:
        - echo "This is pre_build phase"
+       - ls -al
+       - tree
       # - command
   build:
     commands:
