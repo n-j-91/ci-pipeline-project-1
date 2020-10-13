@@ -1,4 +1,38 @@
-[
+[   
+    {
+      "name": "postgress-db",
+      "image": "registry.hub.docker.com/library/postgres:${pg-db-version}",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 5432,
+          "protocol": "tcp",
+          "hostPort": 5432
+        }
+      ],
+      "environment": [
+        {
+          "name": "POSTGRES_DB",
+          "value": "${pg-db-name}"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "${pg-db-password}"
+        }
+      ],
+      "mountPoints": [
+        {
+          "containerPath": "/var/lib/postgresql/data",
+          "sourceVolume": "pg-data"
+        }
+      ],
+      "healthCheck": {
+        "command": [
+          "date"
+        ],
+        "interval": 30
+      }
+    },
     {
       "name": "go-app-updatedb",
       "image": "594776659623.dkr.ecr.eu-west-1.amazonaws.com/dev-images:go-app-1.0.0-132",
@@ -33,6 +67,12 @@
       "command": [
         "updatedb",
         "-s"
+      ],
+      "dependsOn": [
+        {
+          "containerName": "postgress-db",
+          "condition": "HEALTHY"
+        }
       ]
     },
     {
@@ -80,6 +120,10 @@
         {
           "containerName": "go-app-updatedb",
           "condition": "SUCCESS"
+        },
+        {
+          "containerName": "postgress-db",
+          "condition": "HEALTHY"
         }
       ]
     }

@@ -31,7 +31,7 @@ variable "postgres-db-password" {
 variable "postgres-dbhost-name" {
     type = string
     description = "Postgres database host / ip"
-    default = "172.31.23.161"
+    default = "127.0.0.1"
 }
 
 variable "github-personal-token" {
