@@ -31,6 +31,15 @@
           "date"
         ],
         "interval": 30
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "${log-group}",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "ecs"
+        }
       }
     },
     {
@@ -109,6 +118,15 @@
       "command": [
         "serve"
       ],
+      "healthCheck": {
+        "command": [
+          "curl",
+          "-X",
+          "GET",
+          "http://localhost:3000/"
+        ],
+        "interval": 30
+      }
       "portMappings": [
         {
           "hostPort": 3000,
