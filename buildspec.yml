@@ -34,7 +34,7 @@ phases:
        - echo "Updating TechChallengeApp codebase from latest"
        - git submodule update --remote
        - cd TechChallengeApp && git rev-list --count HEAD > ../build-number && cd ..
-       - IMG_VERSION=${MAJOR_VERSION}-$(cat build-number)
+       - IMG_VERSION=${MAJOR_VERSION}-$(cat build-number)-$(echo $RANDOM)
        - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REPO_PATH}
   build:
     commands:

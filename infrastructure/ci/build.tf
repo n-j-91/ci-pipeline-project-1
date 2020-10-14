@@ -55,5 +55,5 @@ resource "aws_codebuild_project" "go-app-build" {
     }
   }
 
-  source_version = "main"
+  source_version = "development"
 }
