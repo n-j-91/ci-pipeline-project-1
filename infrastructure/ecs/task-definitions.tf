@@ -39,6 +39,6 @@ resource "aws_ecs_task_definition" "go-app" {
   network_mode = "awsvpc"
   task_role_arn = "${aws_iam_role.ecs-task-execution-role.arn}"
   execution_role_arn = "${aws_iam_role.ecs-task-execution-role.arn}"
-  cpu = 512
-  memory = 1024
+  cpu = 256
+  memory = 512
 }
