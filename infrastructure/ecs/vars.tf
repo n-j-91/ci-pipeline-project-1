@@ -1,6 +1,9 @@
 variable "ecs-task-execution-role-policy-arn" {
 }
 
+variable "ecr-registry-name" {
+}
+
 variable "postgres-db-version" {
 }
 

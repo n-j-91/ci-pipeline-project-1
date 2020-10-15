@@ -1,55 +1,53 @@
-# data "aws_kms_alias" "default-s3kmskey" {
-#   name = "alias/aws/s3"
-# }
+data "aws_kms_alias" "default-s3kmskey" {
+  name = "alias/aws/s3"
+}
 
-# resource "aws_codepipeline" "codepipeline-for-go-app" {
-#   name     = "go-app-pipeline"
-#   role_arn = "${aws_iam_role.codepipeline-go-app-service-role.arn}"
+resource "aws_codepipeline" "codepipeline-for-go-app" {
+  name     = "go-app-pipeline"
+  role_arn = "${aws_iam_role.codepipeline-go-app-service-role.arn}"
 
-#   artifact_store {
-#     location = "${aws_s3_bucket.codepipeline-bucket-for-go-app.bucket}"
-#     type     = "S3"
+  artifact_store {
+    location = "${aws_s3_bucket.codepipeline-bucket-for-go-app.bucket}"
+    type     = "S3"
 
-#     encryption_key {
-#       id   = "${data.aws_kms_alias.default-s3kmskey.arn}"
-#       type = "KMS"
-#     }
-#   }
+    encryption_key {
+      id   = "${data.aws_kms_alias.default-s3kmskey.arn}"
+      type = "KMS"
+    }
+  }
 
-#   stage {
-#     name = "Source"
+  stage {
+    name = "Source"
 
-#     action {
-#       name             = "checkout-source"
-#       category         = "Source"
-#       owner            = "ThirdParty"
-#       provider         = "GitHub"
-#       version          = "1"
-#       output_artifacts = ["source-from-github-cipipeline"]
+    action {
+      name             = "checkout-ecr-image"
+      category         = "Source"
+      owner            = "AWS"
+      provider         = "ECR"
+      version          =  1
+      output_artifacts = ["image_definitions"]
 
-#       configuration = {
-#         Owner      = "uchann2"
-#         Repo       = "ci-pipeline-project-1"
-#         Branch     = "development"
-#         OAuthToken = "${var.github-personal-token}"
-#       }
-#     }
-#   }
+      configuration =  {
+          RepositoryName = "${var.ecr-registry-name}"
+      }
+    }
+  }
 
-#   stage {
-#     name = "Build"
+  stage {
+    name = "Deploy"
 
-#     action {
-#       name             = "Build"
-#       category         = "Build"
-#       owner            = "AWS"
-#       provider         = "CodeBuild"
-#       input_artifacts  = ["source-from-github-cipipeline"]
-#       version          = "1"
+    action {
+      name            = "deploy-to-ecs"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "ECS"
+      version         = 1 
+      input_artifacts = ["image_definitions"]
 
-#       configuration = {
-#         ProjectName = "${aws_codebuild_project.go-app-build.name}"
-#       }
-#     }
-#   }
-# }
+      configuration =  {
+            ClusterName = "${var.ecs-cluster-name}"
+            ServiceName = "${var.ecs-service-name}"
+      }
+    }
+  }
+}

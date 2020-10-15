@@ -34,7 +34,7 @@ phases:
        - echo "Updating TechChallengeApp codebase from latest"
        - git submodule update --remote
        - cd TechChallengeApp && git rev-list --count HEAD > ../build-number && cd ..
-       - IMG_VERSION=${MAJOR_VERSION}-$(cat build-number)-$(echo $RANDOM)
+       - IMG_VERSION=${MAJOR_VERSION}-$(cat build-number)
        - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REPO_PATH}
   build:
     commands:
@@ -45,7 +45,9 @@ phases:
   post_build:
     commands:
        - docker tag techchallengeapp:latest ${ECR_REPO_PATH}:go-app-${IMG_VERSION}
+       - docker tag techchallengeapp:latest ${ECR_REPO_PATH}:go-app-latest
        - docker push ${ECR_REPO_PATH}:go-app-${IMG_VERSION}
+       - docker push ${ECR_REPO_PATH}:go-app-latest
        - echo "[{\"name\":\"go-app\",\"imageUri\":\"${ECR_REPO_PATH}:go-app-${IMG_VERSION}\"},{\"name\":\"go-app-updatedb\",\"imageUri\":\"${ECR_REPO_PATH}:go-app-${IMG_VERSION}\"}]" > imagedefinitions.json
 #reports:
   #report-name-or-arn:
