@@ -61,7 +61,7 @@ resource "aws_codebuild_project" "go-app-build" {
 resource "aws_codebuild_project" "parse-image-details" {
   name          = "parse-image-details"
   description   = "Parse image details from ECR source action for standard ECS deployment"
-  build_timeout = "3"
+  build_timeout = "5"
   service_role  = "${aws_iam_role.codebuild-go-app-service-role.arn}"
 
   artifacts {
