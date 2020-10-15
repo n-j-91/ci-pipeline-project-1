@@ -25,10 +25,29 @@ resource "aws_codepipeline" "codepipeline-for-go-app" {
       owner            = "AWS"
       provider         = "ECR"
       version          =  1
-      output_artifacts = ["image_definitions"]
+      output_artifacts = ["imageDetailJson"]
 
       configuration =  {
           RepositoryName = "${var.ecr-registry-name}"
+          ImageTag = "go-app-latest"
+      }
+    }
+  }
+
+  stage {
+    name = "Build"
+
+    action {
+      name             = "convert-image-details-json"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      input_artifacts  = ["imageDetailJson"]
+      output_artifacts = ["imageDefinitionsJson"]
+      version          = "1"
+
+      configuration = {
+        ProjectName = "${aws_codebuild_project.parse-image-details.name}"
       }
     }
   }
@@ -42,7 +61,7 @@ resource "aws_codepipeline" "codepipeline-for-go-app" {
       owner           = "AWS"
       provider        = "ECS"
       version         = 1 
-      input_artifacts = ["image_definitions"]
+      input_artifacts = ["imageDefinitionsJson"]
 
       configuration =  {
             ClusterName = "${var.ecs-cluster-name}"
