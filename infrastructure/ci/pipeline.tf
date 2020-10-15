@@ -32,6 +32,22 @@ resource "aws_codepipeline" "codepipeline-for-go-app" {
           ImageTag = "go-app-latest"
       }
     }
+
+    action {
+      name             = "checkout-intbuildspec"
+      category         = "Source"
+      owner            = "ThirdParty"
+      provider         = "GitHub"
+      version          = "1"
+      output_artifacts = ["intBuildSpec"]
+
+      configuration = {
+        Owner      = "uchann2"
+        Repo       = "ci-pipeline-project-1"
+        Branch     = "main"
+        OAuthToken = "${var.github-personal-token}"
+      }
+    }
   }
 
   stage {
@@ -42,12 +58,13 @@ resource "aws_codepipeline" "codepipeline-for-go-app" {
       category         = "Build"
       owner            = "AWS"
       provider         = "CodeBuild"
-      input_artifacts  = ["imageDetailJson"]
+      input_artifacts  = ["imageDetailJson", "intBuildSpec"]
       output_artifacts = ["imageDefinitionsJson"]
       version          = "1"
 
       configuration = {
         ProjectName = "${aws_codebuild_project.parse-image-details.name}"
+        PrimarySource = "intBuildSpec"
       }
     }
   }

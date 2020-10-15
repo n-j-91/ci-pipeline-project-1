@@ -55,7 +55,7 @@ resource "aws_codebuild_project" "go-app-build" {
     }
   }
 
-  source_version = "development"
+  source_version = "main"
 }
 
 resource "aws_codebuild_project" "parse-image-details" {
@@ -99,5 +99,5 @@ resource "aws_codebuild_project" "parse-image-details" {
     }
   }
 
-  source_version = "development"
+  source_version = "main"
 }
