@@ -28,7 +28,7 @@ resource "aws_codebuild_project" "go-app-build" {
 
     environment_variable {
       name  = "ECR_REPO_PATH"
-      value = "${var.ecr_registry_uri}"
+      value = "${var.ecr-registry-uri}"
     }
 
   }
@@ -52,6 +52,50 @@ resource "aws_codebuild_project" "go-app-build" {
 
     git_submodules_config {
       fetch_submodules = true
+    }
+  }
+
+  source_version = "main"
+}
+
+resource "aws_codebuild_project" "parse-image-details" {
+  name          = "parse-image-details"
+  description   = "Parse image details from ECR source action for standard ECS deployment"
+  build_timeout = "5"
+  service_role  = "${aws_iam_role.codebuild-go-app-service-role.arn}"
+
+  artifacts {
+    type = "NO_ARTIFACTS"
+  }
+
+  environment {
+    compute_type                = "BUILD_GENERAL1_SMALL"
+    image                       = "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
+    type                        = "LINUX_CONTAINER"
+    image_pull_credentials_type = "CODEBUILD"
+    privileged_mode = true
+
+  }
+
+  logs_config {
+    cloudwatch_logs {
+      group_name  = "${aws_cloudwatch_log_group.ci-go-app-build.name}"
+    }
+  }
+
+  source {
+    type            = "GITHUB"
+    location        = "https://github.com/uchann2/ci-pipeline-project-1"
+    git_clone_depth = 0
+    buildspec = "intermediatebuildspec.yml"
+
+    auth {
+      type     = "OAUTH"
+      resource = "${aws_codebuild_source_credential.github-personal-token.arn}"
+    }
+
+    git_submodules_config {
+      fetch_submodules = false
     }
   }
 

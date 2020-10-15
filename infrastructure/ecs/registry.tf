@@ -1,8 +1,8 @@
 resource "aws_ecr_repository" "dev-images" {
-  name                 = "dev-images"
+  name                 = "${var.ecr-registry-name}"
   image_tag_mutability = "MUTABLE"
 }
 
-output "ecr_registry_uri" {
+output "ecr-registry-uri" {
   value = "${aws_ecr_repository.dev-images.repository_url}"
 }

@@ -10,6 +10,12 @@ variable "ecr-full-access-policy-arn" {
     default = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
 }
 
+variable "ecr-registry-name" {
+    type = string
+    description = "AWS ECR registry name"
+    default = "dev-images"
+}
+
 variable "postgres-db-version" {
     type = string
     description = "Postgres database image version"

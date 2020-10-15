@@ -29,3 +29,7 @@ resource "aws_ecs_service" "go-app" {
     }
 
 }
+
+output "ecs-service-name" {
+  value = "${aws_ecs_service.go-app.name}"
+}
